@@ -23,4 +23,6 @@ package cn.neillee.bilisocialize;
 
 public class Constant {
     public static final String QQ_APP_ID = "222222";
+    public static final String WECHAT_APP_ID = "wxd930ea5d5a258f4f";
+    public static final String SINA_APP_ID = "2045436852";
 }

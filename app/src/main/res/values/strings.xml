@@ -1,6 +1,4 @@
 <resources>
-    <string name="app_name">BiliSocialize</string>
-
     <string name="login_success">登录成功</string>
     <string name="login_failure">登录失败</string>
     <string name="login_cancel">取消登录</string>
