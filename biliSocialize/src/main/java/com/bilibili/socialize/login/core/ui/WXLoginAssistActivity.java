@@ -17,10 +17,21 @@
 package com.bilibili.socialize.login.core.ui;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.util.Log;
 
 import com.bilibili.socialize.login.core.LoginConfiguration;
 import com.bilibili.socialize.login.core.SocializeMedia;
 import com.bilibili.socialize.login.core.handler.wx.WXLoginHandler;
+import com.bilibili.socialize.share.core.error.BiliShareStatusCode;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * @author NeilLee
@@ -28,7 +39,14 @@ import com.bilibili.socialize.login.core.handler.wx.WXLoginHandler;
  */
 
 public class WXLoginAssistActivity extends BaseAssistActivity<WXLoginHandler> {
-    private static final String TAG = "BLogin.WXLoginAssistActivity";
+    private static final String TAG = "BLogin.WXLoginAstActy";
+    public static final String ACTION_RESULT = "com.bilibili.login.wechat.result";
+
+    public static final String BUNDLE_STATUS_CODE = "status_code";
+    public static final String BUNDLE_STATUS_MSG = "status_msg";
+    public static final String BUNDLE_DATA = "data";
+
+    private boolean mIsFirstIntent;
 
     @Override
     protected String tag() {
@@ -37,10 +55,91 @@ public class WXLoginAssistActivity extends BaseAssistActivity<WXLoginHandler> {
 
     @Override
     protected WXLoginHandler resolveHandler(SocializeMedia media, LoginConfiguration loginConfig) {
+        if (SocializeMedia.WEIXIN.equals(media)) {
+            return new WXLoginHandler(this, loginConfig);
+        }
         return null;
     }
 
     public static void start(Activity activity, LoginConfiguration config, int reqCode) {
-
+        Intent intent = new Intent(activity, WXLoginAssistActivity.class);
+        intent.putExtra(KEY_TYPE, SocializeMedia.WEIXIN.name());
+        intent.putExtra(KEY_CONFIG, config);
+        activity.startActivityForResult(intent, reqCode);
+        activity.overridePendingTransition(0, 0);
     }
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        try {
+            IntentFilter filter = new IntentFilter(ACTION_RESULT);
+            registerReceiver(mResultReceiver, filter);
+            Log.d(TAG, "broadcast has register");
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        if (savedInstanceState == null) {
+            mIsFirstIntent = true;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Log.d(TAG, String.format("act resume: isFirst(%s),hasGetResult(%s)", mIsFirstIntent, mHasGetResult));
+        if (mIsFirstIntent) {
+            mIsFirstIntent = false;
+            return;
+        }
+        if (mHasGetResult) {
+            return;
+        }
+
+        Log.e(TAG, "gonna finish share with incorrect callback (cancel)");
+        finishWithCancelResult();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        release();
+        try {
+            unregisterReceiver(mResultReceiver);
+            Log.d(TAG, "broadcast has unregister");
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private BroadcastReceiver mResultReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (intent == null) {
+                return;
+            }
+
+            int code = intent.getIntExtra(BUNDLE_STATUS_CODE, -1);
+            String msg = intent.getStringExtra(BUNDLE_STATUS_MSG);
+            String data = intent.getStringExtra(BUNDLE_DATA);
+            if (code == BiliShareStatusCode.ST_CODE_SUCCESSED) {
+                Log.d(TAG, "get result from broadcast: success");
+                try {
+                    finishWithSuccessResult(new JSONObject(data));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Log.d(TAG, "get result from broadcast: decode JSON failed");
+                    finishWithFailResult(msg);
+                }
+            } else if (code == BiliShareStatusCode.ST_CODE_ERROR) {
+                Log.d(TAG, "get result from broadcast: failed");
+                finishWithFailResult(msg);
+            } else if (code == BiliShareStatusCode.ST_CODE_ERROR_CANCEL) {
+                Log.d(TAG, "get result from broadcast: cancel");
+                finishWithCancelResult();
+            }
+        }
+    };
 }
