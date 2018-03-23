@@ -22,12 +22,15 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.bilibili.socialize.share.core.error.BiliShareStatusCode;
-import com.bilibili.socialize.share.core.ui.WxAssistActivity;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.IWXAPIEventHandler;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * @author Jungly
@@ -92,19 +95,35 @@ public abstract class BaseWXEntryActivity extends Activity implements IWXAPIEven
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
                 Log.d(TAG, "parse resp: success");
-                sendResult(BiliShareStatusCode.ST_CODE_SUCCESSED, null);
+                try {
+                    String data = authDataToJson((SendAuth.Resp) resp);
+                    sendResult(BiliShareStatusCode.ST_CODE_SUCCESSED, null, data);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    sendResult(BiliShareStatusCode.ST_CODE_ERROR, "error when decoding token of wechat", null);
+                }
                 break;
 
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 Log.d(TAG, "parse resp: cancel");
-                sendResult(BiliShareStatusCode.ST_CODE_ERROR_CANCEL, null);
+                sendResult(BiliShareStatusCode.ST_CODE_ERROR_CANCEL, null, null);
                 break;
 
             case BaseResp.ErrCode.ERR_SENT_FAILED:
                 Log.d(TAG, "parse resp: fail");
-                sendResult(BiliShareStatusCode.ST_CODE_ERROR, resp.errStr);
+                sendResult(BiliShareStatusCode.ST_CODE_ERROR, resp.errStr, null);
                 break;
         }
+    }
+
+    private String authDataToJson(SendAuth.Resp resp) throws JSONException {
+        JSONObject jsonObject = new JSONObject();
+        jsonObject.put("token", resp.code);
+        jsonObject.put("state", resp.state);
+        jsonObject.put("url", resp.url);
+        jsonObject.put("lang", resp.lang);
+        jsonObject.put("country", resp.country);
+        return jsonObject.toString();
     }
 
     /**
@@ -113,10 +132,11 @@ public abstract class BaseWXEntryActivity extends Activity implements IWXAPIEven
      * @param statusCode
      * @param msg
      */
-    private void sendResult(int statusCode, String msg) {
+    private void sendResult(int statusCode, String msg, String data) {
         Intent intent = new Intent(WXLoginAssistActivity.ACTION_RESULT);
         intent.putExtra(WXLoginAssistActivity.BUNDLE_STATUS_CODE, statusCode);
         intent.putExtra(WXLoginAssistActivity.BUNDLE_STATUS_MSG, msg);
+        intent.putExtra(WXLoginAssistActivity.BUNDLE_DATA, data);
         sendBroadcast(intent);
     }
 

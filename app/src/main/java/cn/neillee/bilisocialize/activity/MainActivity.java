@@ -27,8 +27,6 @@ import com.bilibili.socialize.login.core.BiliLogin;
 import com.bilibili.socialize.login.core.LoginConfiguration;
 import com.bilibili.socialize.login.core.SocializeMedia;
 
-import org.json.JSONObject;
-
 import cn.neillee.bilisocialize.Constant;
 import cn.neillee.bilisocialize.R;
 import cn.neillee.bilisocialize.SimpleLoginListener;
@@ -40,6 +38,8 @@ import cn.neillee.bilisocialize.utils.StringUtils;
  */
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+    private static final String TAG = MainActivity.class.getSimpleName();
+
     private TextView mTVLogInfo;
     private BiliLogin mBiliLogin;
 
@@ -91,8 +91,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         mBiliLogin.login(this, media, new SimpleLoginListener(getBaseContext()) {
             @Override
-            public void onSuccess(SocializeMedia type, int code, JSONObject tokens) {
-                syncSignedInfo(tokens.toString());
+            public void onSuccess(SocializeMedia type, int code, String tokens) {
+                syncSignedInfo(tokens);
             }
         });
     }

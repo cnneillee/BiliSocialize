@@ -23,8 +23,6 @@ import android.util.Log;
 import com.bilibili.socialize.login.core.handler.ILoginHandler;
 import com.bilibili.socialize.login.core.handler.LoginTransitHandler;
 
-import org.json.JSONObject;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -169,7 +167,7 @@ public class BiliLogin {
         }
 
         @Override
-        public void onSuccess(SocializeMedia type, int code, JSONObject tokens) {
+        public void onSuccess(SocializeMedia type, int code, String tokens) {
             Log.d(TAG, String.format("login success:(%s %d)", type, code));
             if (mOuterLoginListener != null) {
                 mOuterLoginListener.onSuccess(type, code, tokens);

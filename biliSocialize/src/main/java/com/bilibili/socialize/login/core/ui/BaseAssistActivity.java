@@ -28,10 +28,10 @@ import com.bilibili.socialize.login.core.SocializeListeners;
 import com.bilibili.socialize.login.core.SocializeMedia;
 import com.bilibili.socialize.login.core.handler.BaseLoginHandler;
 
-import org.json.JSONObject;
-
 import static com.bilibili.socialize.login.core.error.BiliLoginStatusCode.ST_CODE_LOGIN_ERROR_EXCEPTION;
-import static com.bilibili.socialize.login.core.ui.BiliLoginDelegateActivity.*;
+import static com.bilibili.socialize.login.core.ui.BiliLoginDelegateActivity.RESULT_CANCEL;
+import static com.bilibili.socialize.login.core.ui.BiliLoginDelegateActivity.RESULT_FAIL;
+import static com.bilibili.socialize.login.core.ui.BiliLoginDelegateActivity.RESULT_SUCCESS;
 
 /**
  * @author NeilLee
@@ -113,7 +113,7 @@ public abstract class BaseAssistActivity<H extends BaseLoginHandler> extends Act
         mLoginHandler.onActivityDestroy();
     }
 
-    protected void finishWithSuccessResult(JSONObject tokens) {
+    protected void finishWithSuccessResult(String tokens) {
         setResult(Activity.RESULT_OK, BiliLoginDelegateActivity.createResult(RESULT_SUCCESS, tokens));
         finish();
     }
@@ -147,7 +147,7 @@ public abstract class BaseAssistActivity<H extends BaseLoginHandler> extends Act
     }
 
     @Override
-    public void onSuccess(SocializeMedia type, int code, JSONObject tokens) {
+    public void onSuccess(SocializeMedia type, int code, String tokens) {
         Log.i(tag(), "----->on inner share success<-----");
         mHasGetResult = true;
         finishWithSuccessResult(tokens);

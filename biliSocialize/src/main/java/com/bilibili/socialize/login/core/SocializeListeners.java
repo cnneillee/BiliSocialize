@@ -1,7 +1,5 @@
 package com.bilibili.socialize.login.core;
 
-import org.json.JSONObject;
-
 import static com.bilibili.socialize.login.core.error.BiliLoginStatusCode.ST_CODE_ERROR;
 import static com.bilibili.socialize.login.core.error.BiliLoginStatusCode.ST_CODE_ERROR_CANCEL;
 import static com.bilibili.socialize.login.core.error.BiliLoginStatusCode.ST_CODE_SUCCESS;
@@ -22,7 +20,7 @@ public abstract class SocializeListeners {
 
         void onProgress(SocializeMedia type, String progressDesc);
 
-        void onSuccess(SocializeMedia type, int code, JSONObject tokens);
+        void onSuccess(SocializeMedia type, int code, String tokens);
 
         void onError(SocializeMedia type, int code, Throwable error);
 

@@ -25,8 +25,6 @@ import com.bilibili.socialize.login.core.SocializeListeners;
 import com.bilibili.socialize.login.core.SocializeMedia;
 import com.bilibili.socialize.login.core.ui.BiliLoginDelegateActivity;
 
-import org.json.JSONObject;
-
 /**
  * @author NeilLee
  * @since 2018/1/29 17:51
@@ -82,13 +80,13 @@ public class LoginTransitHandler extends AbsLoginHandler {
         listener.onProgress(type, progressDesc);
     }
 
-    public void onSuccess(SocializeMedia type, int code, JSONObject jsonObject) {
+    public void onSuccess(SocializeMedia type, int code, String data) {
         Log.d(tag(), "on share success");
         SocializeListeners.LoginListener listener = getLoginListener();
         if (listener == null) {
             return;
         }
-        listener.onSuccess(type, code, jsonObject);
+        listener.onSuccess(type, code, data);
     }
 
     public void onError(SocializeMedia type, int code, Throwable error) {

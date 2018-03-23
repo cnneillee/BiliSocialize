@@ -80,7 +80,7 @@ public class QQLoginHandler extends BaseLoginHandler {
                 mTencent.setAccessToken(accessToken, expire);
                 mTencent.setOpenId(openid);
                 if (getLoginListener() != null) {
-                    getLoginListener().onSuccess(SocializeMedia.QQ, ST_CODE_SUCCESS, jsonObject);
+                    getLoginListener().onSuccess(SocializeMedia.QQ, ST_CODE_SUCCESS, jsonObject.toString());
                 }
             }
         } catch (Exception e) {

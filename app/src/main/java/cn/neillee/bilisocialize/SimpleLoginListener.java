@@ -22,8 +22,6 @@ import android.widget.Toast;
 import com.bilibili.socialize.login.core.SocializeListeners;
 import com.bilibili.socialize.login.core.SocializeMedia;
 
-import org.json.JSONObject;
-
 /**
  * @author NeilLee
  * @since 2018/3/19 16:42
@@ -47,7 +45,7 @@ public class SimpleLoginListener implements SocializeListeners.LoginListener {
     }
 
     @Override
-    public void onSuccess(SocializeMedia type, int code, JSONObject tokens) {
+    public void onSuccess(SocializeMedia type, int code, String tokens) {
         Toast.makeText(mContext, R.string.login_success, Toast.LENGTH_SHORT).show();
     }
 

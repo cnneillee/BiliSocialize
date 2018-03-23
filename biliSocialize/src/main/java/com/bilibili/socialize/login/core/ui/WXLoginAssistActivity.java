@@ -30,9 +30,6 @@ import com.bilibili.socialize.login.core.SocializeMedia;
 import com.bilibili.socialize.login.core.handler.wx.WXLoginHandler;
 import com.bilibili.socialize.share.core.error.BiliShareStatusCode;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * @author NeilLee
  * @since 2018/1/31 10:18
@@ -126,13 +123,7 @@ public class WXLoginAssistActivity extends BaseAssistActivity<WXLoginHandler> {
             String data = intent.getStringExtra(BUNDLE_DATA);
             if (code == BiliShareStatusCode.ST_CODE_SUCCESSED) {
                 Log.d(TAG, "get result from broadcast: success");
-                try {
-                    finishWithSuccessResult(new JSONObject(data));
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    Log.d(TAG, "get result from broadcast: decode JSON failed");
-                    finishWithFailResult(msg);
-                }
+                finishWithSuccessResult(data);
             } else if (code == BiliShareStatusCode.ST_CODE_ERROR) {
                 Log.d(TAG, "get result from broadcast: failed");
                 finishWithFailResult(msg);

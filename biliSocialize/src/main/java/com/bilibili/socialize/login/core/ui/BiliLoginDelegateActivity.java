@@ -30,7 +30,6 @@ import com.bilibili.socialize.login.core.error.LoginException;
 import com.bilibili.socialize.login.core.handler.ILoginHandler;
 import com.bilibili.socialize.login.core.handler.LoginTransitHandler;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import static com.bilibili.socialize.login.core.error.BiliLoginStatusCode.ST_CODE_ERROR;
@@ -135,16 +134,11 @@ public class BiliLoginDelegateActivity extends Activity {
     }
 
     private void onSuccess(SocializeMedia type, String data) {
-        Log.d(TAG, "on inner login success");
+        Log.d(TAG, String.format("on inner login success with data:%s", data));
         LoginTransitHandler handler = getLoginHandler();
         if (handler != null && !TextUtils.isEmpty(data)) {
             // todo 这里传递结果
-            try {
-                JSONObject jsonObject = new JSONObject(data);
-                handler.onSuccess(type, ST_CODE_SUCCESS, jsonObject);
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
+            handler.onSuccess(type, ST_CODE_SUCCESS, data);
         }
         finish();
     }
