@@ -58,8 +58,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 new LoginConfiguration
                         .Builder()
                         .qq(Constant.QQ_APP_ID)
+                        .wx(Constant.WECHAT_APP_ID)
                         .build();
-        mBiliLogin = BiliLogin.get(SocializeMedia.QQ.toString());
+        mBiliLogin = BiliLogin.global();
         mBiliLogin.config(configuration);
     }
 
@@ -79,8 +80,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 media = SocializeMedia.QQ;
                 break;
             case R.id.sign_wechat:
-//                media = SocializeMedia.WEIXIN;
-//                break;
+                media = SocializeMedia.WEIXIN;
+                break;
             case R.id.sign_sina:
 //                media = SocializeMedia.SINA;
 //                break;

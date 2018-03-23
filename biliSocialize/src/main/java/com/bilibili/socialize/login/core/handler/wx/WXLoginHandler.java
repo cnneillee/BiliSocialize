@@ -17,11 +17,15 @@
 package com.bilibili.socialize.login.core.handler.wx;
 
 import android.app.Activity;
+import android.text.TextUtils;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.bilibili.socialize.login.core.LoginConfiguration;
+import com.bilibili.socialize.login.core.LoginPlatformConfig;
 import com.bilibili.socialize.login.core.SocializeListeners;
 import com.bilibili.socialize.login.core.SocializeMedia;
+import com.bilibili.socialize.login.core.error.LoginConfigException;
 import com.bilibili.socialize.login.core.handler.BaseLoginHandler;
 import com.bilibili.socialize.share.R;
 import com.bilibili.socialize.share.core.error.BiliShareStatusCode;
@@ -29,6 +33,8 @@ import com.bilibili.socialize.share.core.error.ShareException;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import java.util.Map;
 
 import static com.bilibili.socialize.login.core.SocializeMedia.WEIXIN;
 
@@ -38,11 +44,15 @@ import static com.bilibili.socialize.login.core.SocializeMedia.WEIXIN;
  */
 
 public class WXLoginHandler extends BaseLoginHandler {
+    private static final String TAG = "BLogin.wx.wx_handler";
+
     private String mAppId;
     private IWXAPI mWXApi;
 
     public WXLoginHandler(Activity context, LoginConfiguration configuration) {
         super(context, configuration);
+        Map<String, String> devInfo = configuration.getPlatformConfig().getPlatformDevInfo(getMediaType());
+        mAppId = devInfo.get(LoginPlatformConfig.APP_ID);
     }
 
     @Override
@@ -74,7 +84,10 @@ public class WXLoginHandler extends BaseLoginHandler {
 
     @Override
     public void checkConfig() throws Exception {
-
+        if (TextUtils.isEmpty(mAppId)) {
+            Log.e(TAG, "login config error due to null APPID");
+            throw new LoginConfigException("empty APPID");
+        }
     }
 
     @Override

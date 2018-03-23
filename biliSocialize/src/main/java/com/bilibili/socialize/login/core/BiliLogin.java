@@ -22,7 +22,6 @@ import android.util.Log;
 
 import com.bilibili.socialize.login.core.handler.ILoginHandler;
 import com.bilibili.socialize.login.core.handler.LoginTransitHandler;
-import com.bilibili.socialize.login.core.handler.wx.WXLoginHandler;
 
 import org.json.JSONObject;
 
@@ -42,6 +41,7 @@ public class BiliLogin {
     private ILoginHandler mCurrentLoginHandler;
     private Map<SocializeMedia, ILoginHandler> mHandlerMap = new HashMap<>();
     private LoginConfiguration mLoginConfiguration;
+    private static final String CLIENT_NAME_DEFAULT = "_share_client_name_inner_default_";
 
     private SocializeListeners.LoginListener mOuterLoginListener;
 
@@ -73,6 +73,10 @@ public class BiliLogin {
 
     public ILoginHandler getCurrentLoginHandler() {
         return mCurrentLoginHandler;
+    }
+
+    public static BiliLogin global() {
+        return get(CLIENT_NAME_DEFAULT);
     }
 
     private BiliLogin(String name) {
@@ -124,10 +128,8 @@ public class BiliLogin {
         ILoginHandler handler = null;
         switch (media) {
             case QQ:
-                handler = new LoginTransitHandler(activity, configuration, SocializeMedia.QQ, mName);
-                break;
             case WEIXIN:
-                handler = new WXLoginHandler(activity, configuration);
+                handler = new LoginTransitHandler(activity, configuration, media, mName);
                 break;
         }
         mHandlerMap.put(media, handler);
@@ -177,7 +179,7 @@ public class BiliLogin {
 
         @Override
         public void onError(SocializeMedia type, int code, Throwable error) {
-            Log.d(TAG, String.format("login error due to:%s (%s %d)", error.getMessage(), type, code));
+            Log.d(TAG, String.format("login error due to:%s (%s %d)", error == null ? "NULL" : error.getMessage(), type, code));
             if (mOuterLoginListener != null) {
                 mOuterLoginListener.onError(type, code, error);
             }

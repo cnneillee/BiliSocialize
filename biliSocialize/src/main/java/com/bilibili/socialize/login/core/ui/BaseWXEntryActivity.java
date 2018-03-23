@@ -114,9 +114,9 @@ public abstract class BaseWXEntryActivity extends Activity implements IWXAPIEven
      * @param msg
      */
     private void sendResult(int statusCode, String msg) {
-        Intent intent = new Intent(WxAssistActivity.ACTION_RESULT);
-        intent.putExtra(WxAssistActivity.BUNDLE_STATUS_CODE, statusCode);
-        intent.putExtra(WxAssistActivity.BUNDLE_STATUS_MSG, msg);
+        Intent intent = new Intent(WXLoginAssistActivity.ACTION_RESULT);
+        intent.putExtra(WXLoginAssistActivity.BUNDLE_STATUS_CODE, statusCode);
+        intent.putExtra(WXLoginAssistActivity.BUNDLE_STATUS_MSG, msg);
         sendBroadcast(intent);
     }
 
