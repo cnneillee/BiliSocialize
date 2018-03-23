@@ -134,9 +134,9 @@ public class BiliLoginDelegateActivity extends Activity {
     }
 
     private void onSuccess(SocializeMedia type, String data) {
-        Log.d(TAG, String.format("on inner login success with data:%s", data));
+        Log.d(TAG, "on inner login success");
         LoginTransitHandler handler = getLoginHandler();
-        if (handler != null && !TextUtils.isEmpty(data)) {
+        if (handler != null) {
             // todo 这里传递结果
             handler.onSuccess(type, ST_CODE_SUCCESS, data);
         }
