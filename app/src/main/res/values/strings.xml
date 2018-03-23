@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">BiliSocialize</string>
+
+    <string name="login_success">登录成功</string>
+    <string name="login_failure">登录失败</string>
+    <string name="login_cancel">取消登录</string>
+
+    <string name="dummy_text">{"ret":0,"openid":"xxxxxx097xxxxxxEB2117xxxxxxE151D","access_token":"xxxxxx7E216xxxxxx78F875049xxxxxx","pay_token":"xxxxxx496D09BBxxxxxx0C56Axxxxxx9","expires_in":7776000,"pf":"desktop_m_qq-10000144-android-2002-","pfkey":"xxxxxxe293a06d1xxxxxx4b26bxxxxxx","msg":"","login_cost":185,"query_authority_cost":1205,"authority_cost":0}</string>
+
+    <string name="dummy_text1">{"ret":0,"msg":"","is_lost":0,"nickname":"这是昵称","gender":"男","province":"","city":"","year":"2018","figureurl":"http://qzapp.qlogo.cn/qzapp/111111/942FEA70050EEAFBD4DCE2C1FC775E56/30","figureurl_1":"http://qzapp.qlogo.cn/qzapp/111111/942FEA70050EEAFBD4DCE2C1FC775E56/50","figureurl_2":"http://qzapp.qlogo.cn/qzapp/111111/942FEA70050EEAFBD4DCE2C1FC775E56/100","figureurl_qq_1":"http://q.qlogo.cn/qqapp/100312990/DE1931D5330620DBD07FB4A5422917B6/40","figureurl_qq_2":"http://q.qlogo.cn/qqapp/100312990/DE1931D5330620DBD07FB4A5422917B6/100","is_yellow_vip":"0","vip":"0","yellow_vip_level":"0","level":"0","is_yellow_year_vip":"0"}</string>
+</resources>
