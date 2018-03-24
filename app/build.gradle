@@ -61,7 +61,7 @@ android {
             applicationId "com.sina.weibo.sdk.demo"
             signingConfig signingConfigs.sina_sign
             resValue "string", "app_name", "BiSocial-SinaDemo"
-            manifestPlaceholders = [app_icon: "@drawable/share_sina"]
+            manifestPlaceholders = [app_icon: "@drawable/share_sina_weibo"]
         }
     }
 }
