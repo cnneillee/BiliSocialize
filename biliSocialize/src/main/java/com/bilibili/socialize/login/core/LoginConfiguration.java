@@ -85,6 +85,11 @@ public class LoginConfiguration implements Parcelable {
             return this;
         }
 
+        public Builder sina(String appKey) {
+            mPlatformConfig.addPlatformDevInfo(SocializeMedia.SINA, LoginPlatformConfig.APP_KEY, appKey);
+            return this;
+        }
+
         public LoginConfiguration build() {
             checkFields();
             return new LoginConfiguration(this);

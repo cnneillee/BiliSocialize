@@ -127,6 +127,7 @@ public class BiliLogin {
         switch (media) {
             case QQ:
             case WEIXIN:
+            case SINA:
                 handler = new LoginTransitHandler(activity, configuration, media, mName);
                 break;
         }

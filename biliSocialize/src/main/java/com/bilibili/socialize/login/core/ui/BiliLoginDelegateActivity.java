@@ -189,6 +189,7 @@ public class BiliLoginDelegateActivity extends Activity {
                 WXLoginAssistActivity.start(this, mConfig, REQ_CODE);
                 break;
             case SINA:
+                SinaLoginAssistActivity.start(this, mConfig, REQ_CODE);
                 break;
         }
     }
