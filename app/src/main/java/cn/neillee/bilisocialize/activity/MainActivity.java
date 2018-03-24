@@ -21,10 +21,10 @@ import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bilibili.socialize.login.core.BiliLogin;
 import com.bilibili.socialize.login.core.LoginConfiguration;
+import com.bilibili.socialize.login.core.LoginPlatformConfig;
 import com.bilibili.socialize.login.core.SocializeMedia;
 
 import cn.neillee.bilisocialize.Constant;
@@ -59,7 +59,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         .Builder()
                         .qq(Constant.QQ_APP_ID)
                         .wx(Constant.WECHAT_APP_ID)
+                        .sina(Constant.SINA_APP_ID)
                         .build();
+        configuration.getPlatformConfig().getPlatformDevInfo(SocializeMedia.SINA).put(LoginPlatformConfig.SCOPE, Constant.SINA_SCOPE);
+        configuration.getPlatformConfig().getPlatformDevInfo(SocializeMedia.SINA).put(LoginPlatformConfig.REDIRECT_URL, Constant.SINA_REDIRECT_URL);
         mBiliLogin = BiliLogin.global();
         mBiliLogin.config(configuration);
     }
@@ -83,9 +86,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 media = SocializeMedia.WEIXIN;
                 break;
             case R.id.sign_sina:
-//                media = SocializeMedia.SINA;
-//                break;
-                Toast.makeText(this, "暂不支持", Toast.LENGTH_SHORT).show();
+                media = SocializeMedia.SINA;
+                break;
             default:
                 return;
         }
