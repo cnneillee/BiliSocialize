@@ -64,6 +64,16 @@ android {
             manifestPlaceholders = [app_icon: "@drawable/share_sina_weibo"]
         }
     }
+
+    applicationVariants.all { variant ->
+        variant.outputs.each { output ->
+            def outputFile = output.outputFile
+            if (outputFile != null && outputFile.name.endsWith('.apk')) {
+                def fileName = "BSocial_${variant.flavorName}_${defaultConfig.versionName}_${defaultConfig.versionCode}_${variant.buildType.name}.apk"
+                output.outputFileName = new File(fileName)
+            }
+        }
+    }
 }
 
 dependencies {
@@ -73,4 +83,14 @@ dependencies {
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
     implementation project(':biliSocialize')
+}
+
+build.doLast {
+    def today = new Date().format('yyyyMMdd_hh')
+    File output_dir1 = new File(project.rootDir.absolutePath + "${OUT_PUT_DIR_PARA}" + "/" + today + "/")
+    copy {
+        from('build/outputs/apk')
+        into(output_dir1)
+        include '**/*.apk'
+    }
 }
